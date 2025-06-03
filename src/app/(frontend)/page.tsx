@@ -10,6 +10,9 @@ import {
   Rocket,
 } from 'lucide-react'
 import BlockDagBackground from '@/components/MainPage/block-dag-background'
+import Image from 'next/image'
+
+const featureCard = `group flex flex-col h-40 p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:bg-white/10 transition-all`
 
 export default function Home() {
   return (
@@ -23,7 +26,7 @@ export default function Home() {
       <div className="relative z-10">
         {/* Main content with consistent spacing */}
         <main className="container mx-auto px-6 py-12 flex-1">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
             {/* Left column */}
             <div className="space-y-10">
               {/* Hero section - expanded with more spacing */}
@@ -53,7 +56,7 @@ export default function Home() {
                 {/* Card 1 */}
                 <Link
                   href="#"
-                  className="group flex flex-col h-[140px] p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:bg-white/10 transition-all"
+                  className={featureCard}
                 >
                   <BookOpen className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Slovník Pojmů</h3>
@@ -63,7 +66,7 @@ export default function Home() {
                 {/* Card 2 */}
                 <Link
                   href="#"
-                  className="group flex flex-col h-[140px] p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:bg-white/10 transition-all"
+                  className={featureCard}
                 >
                   <Rocket className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Jak začít</h3>
@@ -73,7 +76,7 @@ export default function Home() {
                 {/* Card 3 */}
                 <Link
                   href="#"
-                  className="group flex flex-col h-[140px] p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:bg-white/10 transition-all"
+                  className={featureCard}
                 >
                   <Store className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Kde utratit</h3>
@@ -83,7 +86,7 @@ export default function Home() {
                 {/* Card 4 */}
                 <Link
                   href="#"
-                  className="group flex flex-col h-[140px] p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:bg-white/10 transition-all"
+                  className={featureCard}
                 >
                   <Users className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Komunita</h3>
@@ -93,7 +96,7 @@ export default function Home() {
                 {/* Card 5 */}
                 <Link
                   href="#"
-                  className="group flex flex-col h-[140px] p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:bg-white/10 transition-all"
+                  className={featureCard}
                 >
                   <HelpCircle className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">FAQ</h3>
@@ -101,7 +104,7 @@ export default function Home() {
                 </Link>
 
                 {/* Discord card */}
-                <div className="flex flex-col h-[140px] p-5 bg-gradient-to-br from-teal/20 to-transparent backdrop-blur-sm border border-teal/20 rounded-lg">
+                <div className={featureCard}>
                   <Users className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Discord Chat</h3>
                   <p className="text-xs text-gray-400 mt-2 mb-3">Připoj se k živé diskuzi</p>
@@ -128,9 +131,9 @@ export default function Home() {
             </div>
 
             {/* Right column */}
-            <div className="space-y-8">
+            <div className="flex flex-col justify-between h-full">
               {/* Articles card */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10">
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 flex-grow mb-4 flex flex-col">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="font-medium text-xl">Nejnovější články</h2>
                   <Link href="#" className="text-teal text-sm hover:underline flex items-center">
@@ -139,102 +142,97 @@ export default function Home() {
                   </Link>
                 </div>
 
-                <div className="space-y-6">
-                  <div className="pb-4 border-b border-white/10">
-                    <Link href="#" className="block group">
-                      <h3 className="font-medium text-base group-hover:text-teal transition-colors">
-                        Kaspa: Budoucnost rychlých transakcí
-                      </h3>
-                      <p className="text-sm text-gray-400 mt-2">
-                        Jak Kaspa řeší problém škálovatelnosti pomocí BlockDAG technologie a proč je
-                        to důležité pro budoucnost kryptoměn...
-                      </p>
-                      <div className="flex items-center mt-3 text-xs text-gray-500">
-                        <span>15. 5. 2025</span>
-                        <span className="mx-2">•</span>
-                        <span>5 min čtení</span>
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="pb-4 border-b border-white/10">
-                    <Link href="#" className="block group">
-                      <h3 className="font-medium text-base group-hover:text-teal transition-colors">
-                        Průvodce peněženkami pro Kaspa
-                      </h3>
-                      <p className="text-sm text-gray-400 mt-2">
-                        Přehled nejlepších peněženek pro bezpečné uložení KAS tokenů a jejich výhody
-                        pro různé typy uživatelů...
-                      </p>
-                      <div className="flex items-center mt-3 text-xs text-gray-500">
-                        <span>10. 5. 2025</span>
-                        <span className="mx-2">•</span>
-                        <span>8 min čtení</span>
-                      </div>
-                    </Link>
-                  </div>
-                  <div>
-                    <Link href="#" className="block group">
-                      <h3 className="font-medium text-base group-hover:text-teal transition-colors">
-                        Jak těžit Kaspa v roce 2025
-                      </h3>
-                      <p className="text-sm text-gray-400 mt-2">
-                        Kompletní návod pro začátečníky i pokročilé těžaře, včetně doporučeného
-                        hardwaru a optimalizace nastavení...
-                      </p>
-                      <div className="flex items-center mt-3 text-xs text-gray-500">
-                        <span>5. 5. 2025</span>
-                        <span className="mx-2">•</span>
-                        <span>12 min čtení</span>
-                      </div>
-                    </Link>
-                  </div>
+                <div className="flex flex-col flex-grow justify-between">
+                  <Link href="#" className="block group py-2">
+                    <h3 className="font-medium text-base group-hover:text-teal transition-colors">
+                      Kaspa: Budoucnost rychlých transakcí
+                    </h3>
+                    <p className="text-sm text-gray-400 mt-2">
+                      Jak Kaspa řeší problém škálovatelnosti pomocí BlockDAG technologie a proč je
+                      to důležité pro budoucnost kryptoměn...
+                    </p>
+                    <div className="flex items-center mt-3 text-xs text-gray-500">
+                      <span>15. 5. 2025</span>
+                      <span className="mx-2">•</span>
+                      <span>5 min čtení</span>
+                    </div>
+                  </Link>
+                  <div className="h-px bg-white/10 my-2" />
+                  <Link href="#" className="block group py-2">
+                    <h3 className="font-medium text-base group-hover:text-teal transition-colors">
+                      Průvodce peněženkami pro Kaspa
+                    </h3>
+                    <p className="text-sm text-gray-400 mt-2">
+                      Přehled nejlepších peněženek pro bezpečné uložení KAS tokenů a jejich výhody
+                      pro různé typy uživatelů...
+                    </p>
+                    <div className="flex items-center mt-3 text-xs text-gray-500">
+                      <span>10. 5. 2025</span>
+                      <span className="mx-2">•</span>
+                      <span>8 min čtení</span>
+                    </div>
+                  </Link>
+                  <div className="h-px bg-white/10 my-2" />
+                  <Link href="#" className="block group py-2">
+                    <h3 className="font-medium text-base group-hover:text-teal transition-colors">
+                      Jak těžit Kaspa v roce 2025
+                    </h3>
+                    <p className="text-sm text-gray-400 mt-2">
+                      Kompletní návod pro začátečníky i pokročilé těžaře, včetně doporučeného
+                      hardwaru a optimalizace nastavení...
+                    </p>
+                    <div className="flex items-center mt-3 text-xs text-gray-500">
+                      <span>5. 5. 2025</span>
+                      <span className="mx-2">•</span>
+                      <span>12 min čtení</span>
+                    </div>
+                  </Link>
                 </div>
               </div>
 
               {/* Price card */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-5 border border-white/10">
-                <div className="flex justify-between items-center mb-4">
-                  <h2 className="font-medium">Aktuální cena</h2>
+              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 h-40">
+                <div className="flex justify-between items-center mb-3">
+                  <h2 className="font-medium text-base">Aktuální cena</h2>
                   <span className="text-xs text-gray-400">Aktualizováno před 5 min</span>
                 </div>
 
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center">
-                    <svg
-                      width="20"
-                      height="20"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M6 4L18 12L6 20V4Z" fill="black" />
-                    </svg>
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="size-5 rounded-full bg-white flex items-center justify-center">
+                    <Image
+                      src="/logo.svg"
+                      alt="Kaspacoin.cz Logo"
+                      width={20}
+                      height={20}
+                      className="w-5 h-5"
+                      priority
+                    />
                   </div>
-                  <div className="flex items-center gap-3">
-                    <div className="text-xl font-bold">$0.1247</div>
-                    <div className="flex items-center text-teal text-xs px-2 py-1 bg-teal/10 rounded-full">
-                      <TrendingUp className="w-3 h-3 mr-1" />
+                  <div className="flex items-center gap-2">
+                    <div className="text-lg font-bold">$0.1247</div>
+                    <div className="flex items-center text-teal text-xs px-1.5 py-0.5 bg-teal/10 rounded-full">
+                      <TrendingUp className="w-2.5 h-2.5 mr-1" />
                       <span>+5.8%</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-4 gap-4 text-sm">
+                <div className="grid grid-cols-4 gap-2 text-xs">
                   <div>
-                    <div className="text-gray-400 text-xs mb-1">Market Cap</div>
-                    <div className="font-medium">$1.45B</div>
+                    <div className="text-gray-400 text-xs mb-0.5">Market Cap</div>
+                    <div className="font-medium text-xs">$1.45B</div>
                   </div>
                   <div>
-                    <div className="text-gray-400 text-xs mb-1">Volume</div>
-                    <div className="font-medium">$87.2M</div>
+                    <div className="text-gray-400 text-xs mb-0.5">Volume</div>
+                    <div className="font-medium text-xs">$87.2M</div>
                   </div>
                   <div>
-                    <div className="text-gray-400 text-xs mb-1">Rank</div>
-                    <div className="font-medium">#42</div>
+                    <div className="text-gray-400 text-xs mb-0.5">Rank</div>
+                    <div className="font-medium text-xs">#42</div>
                   </div>
                   <div>
-                    <div className="text-gray-400 text-xs mb-1">Hashrate</div>
-                    <div className="font-medium">1.2 EH/s</div>
+                    <div className="text-gray-400 text-xs mb-0.5">Hashrate</div>
+                    <div className="font-medium text-xs">1.2 EH/s</div>
                   </div>
                 </div>
               </div>

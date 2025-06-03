@@ -4,29 +4,26 @@ import React from 'react'
 
 import type { Footer } from '@/payload-types'
 
-import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
-import { CMSLink } from '@/components/Link'
-import { Logo } from '@/components/Logo/Logo'
+//import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
+//import { CMSLink } from '@/components/Link'
+//import { Logo } from '@/components/Logo/Logo'
 
 export async function Footer() {
-  const footerData: Footer = await getCachedGlobal('footer', 1)()
+  //const footerData: Footer = await getCachedGlobal('footer', 1)()
 
-  const navItems = footerData?.navItems || []
+  //const navItems = footerData?.navItems || []
 
   return (
-    <footer className="mt-auto border-t border-border bg-black dark:bg-card text-white">
-      <div className="container py-8 gap-8 flex flex-col md:flex-row md:justify-between">
-        <Link className="flex items-center" href="/">
-          <Logo />
-        </Link>
-
-        <div className="flex flex-col-reverse items-start md:flex-row gap-4 md:items-center">
-          <ThemeSelector />
-          <nav className="flex flex-col md:flex-row gap-4">
-            {navItems.map(({ link }, i) => {
-              return <CMSLink className="text-white" key={i} {...link} />
-            })}
-          </nav>
+    <footer className="container mx-auto px-6 py-6 border-t border-white/10">
+      <div className="flex justify-between items-center text-sm text-gray-400">
+        <div>© 2025 Kaspacoin.cz</div>
+        <div className="flex items-center gap-6">
+          <Link href="#" className="hover:text-white transition-colors">
+            Kontakt
+          </Link>
+          <Link href="#" className="hover:text-white transition-colors">
+            Podmínky
+          </Link>
         </div>
       </div>
     </footer>

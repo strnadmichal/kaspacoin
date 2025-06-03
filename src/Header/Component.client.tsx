@@ -3,10 +3,10 @@ import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import Image from 'next/image'
 
 import type { Header } from '@/payload-types'
 
-import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
 
 interface HeaderClientProps {
@@ -30,11 +30,22 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   }, [headerTheme])
 
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
+    <header className="container mx-auto py-6 px-6 relative z-50" {...(theme ? { 'data-theme': theme } : {})}>
+      <div className="flex justify-between items-center">
+        {/* Logo */}
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/logo.svg"
+            alt="Kaspacoin.cz Logo"
+            width={64}
+            height={64}
+            className="w-16 h-16"
+            priority
+          />
+          <span className="font-medium text-lg text-white">Kaspacoin.cz</span>
         </Link>
+        
+        {/* Navigation */}
         <HeaderNav data={data} />
       </div>
     </header>

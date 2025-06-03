@@ -35,16 +35,18 @@ const BlockDagBackground = () => {
 
     // Create blocks - increased number and size
     const blocks: Block[] = []
-    const numBlocks = 40 // Increased from 20 to 40
+    const numBlocks = 50 // Increased from 20 to 40
     const maxConnections = 3
+    const sizeMultiplier = 2
+    const speedMultiplier = 1
 
     // Create blocks with random positions and larger sizes
     for (let i = 0; i < numBlocks; i++) {
       blocks.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        size: Math.random() * 8 + 4, // Increased size range from 2-6px to 4-12px
-        speed: Math.random() * 0.2 + 0.1, // Speed between 0.1-0.3
+        size: (Math.random() * 8 + 4) * sizeMultiplier, // Increased size range from 2-6px to 4-12px
+        speed: (Math.random() * 0.2 + 0.1) * speedMultiplier, // Speed between 0.1-0.3
         color: i % 5 === 0 ? '#70C7BA' : '#ffffff', // Some blocks are teal
         connections: [],
       })

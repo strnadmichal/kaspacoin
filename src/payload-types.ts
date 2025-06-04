@@ -191,7 +191,15 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | ArticleContentBlock
+    | StructuredArticleBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -482,6 +490,89 @@ export interface ContentBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'content';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleContentBlock".
+ */
+export interface ArticleContentBlock {
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  enableTableOfContents?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'articleContent';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StructuredArticleBlock".
+ */
+export interface StructuredArticleBlock {
+  articleSections: (HeadingBlock | RichTextBlock | ImageBlock)[];
+  enableTableOfContents?: boolean | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'structuredArticle';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeadingBlock".
+ */
+export interface HeadingBlock {
+  text: string;
+  level: 'h2' | 'h3' | 'h4';
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'headingBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock".
+ */
+export interface RichTextBlock {
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'richTextBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageBlock".
+ */
+export interface ImageBlock {
+  image: number | Media;
+  caption?: string | null;
+  size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'imageBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1015,6 +1106,8 @@ export interface PagesSelect<T extends boolean = true> {
     | {
         cta?: T | CallToActionBlockSelect<T>;
         content?: T | ContentBlockSelect<T>;
+        articleContent?: T | ArticleContentBlockSelect<T>;
+        structuredArticle?: T | StructuredArticleBlockSelect<T>;
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
@@ -1080,6 +1173,62 @@ export interface ContentBlockSelect<T extends boolean = true> {
             };
         id?: T;
       };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ArticleContentBlock_select".
+ */
+export interface ArticleContentBlockSelect<T extends boolean = true> {
+  content?: T;
+  enableTableOfContents?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "StructuredArticleBlock_select".
+ */
+export interface StructuredArticleBlockSelect<T extends boolean = true> {
+  articleSections?:
+    | T
+    | {
+        headingBlock?: T | HeadingBlockSelect<T>;
+        richTextBlock?: T | RichTextBlockSelect<T>;
+        imageBlock?: T | ImageBlockSelect<T>;
+      };
+  enableTableOfContents?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeadingBlock_select".
+ */
+export interface HeadingBlockSelect<T extends boolean = true> {
+  text?: T;
+  level?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "RichTextBlock_select".
+ */
+export interface RichTextBlockSelect<T extends boolean = true> {
+  richText?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ImageBlock_select".
+ */
+export interface ImageBlockSelect<T extends boolean = true> {
+  image?: T;
+  caption?: T;
+  size?: T;
   id?: T;
   blockName?: T;
 }

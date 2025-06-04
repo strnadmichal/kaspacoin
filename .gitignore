@@ -5,6 +5,7 @@ node_modules
 .env
 .next
 .vercel
+docker-compose.yml
 
 # Payload default media upload directory
 public/media/

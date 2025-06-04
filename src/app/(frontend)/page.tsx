@@ -42,7 +42,7 @@ export default function Home() {
                 {/* CTA buttons with consistent spacing */}
                 <div className="flex flex-wrap gap-4 pt-4">
                   <Link
-                    href="#"
+                    href="/co-je-kaspa"
                     className="inline-flex items-center px-5 py-3 rounded-md bg-white text-black font-medium hover:bg-white/90 transition-colors"
                   >
                     <span>Co je Kaspa?</span>

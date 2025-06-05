@@ -7,7 +7,7 @@ const staticHeaderData = {
   navItems: [
     { link: { type: 'custom' as const, url: '/co-je-kaspa', label: 'Co je Kaspa?' } },
     { link: { type: 'custom' as const, url: '#', label: 'Články' } },
-    { link: { type: 'custom' as const, url: '#', label: 'FAQ' } },
+    { link: { type: 'custom' as const, url: '/faq', label: 'FAQ' } },
     { link: { type: 'custom' as const, url: '#', label: 'Obchodníci' } },
     { link: { type: 'custom' as const, url: '#', label: 'Slovník' } },
     { link: { type: 'custom' as const, url: '#', label: 'Komunita' } },

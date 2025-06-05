@@ -54,50 +54,35 @@ export default function Home() {
               {/* Feature cards grid with consistent spacing and equal heights */}
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {/* Card 1 */}
-                <Link
-                  href="#"
-                  className={featureCard}
-                >
+                <Link href="#" className={featureCard}>
                   <BookOpen className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Slovník Pojmů</h3>
                   <p className="text-xs text-gray-400 mt-2">Vysvětlení krypto terminologie</p>
                 </Link>
 
                 {/* Card 2 */}
-                <Link
-                  href="#"
-                  className={featureCard}
-                >
+                <Link href="#" className={featureCard}>
                   <Rocket className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Jak začít</h3>
                   <p className="text-xs text-gray-400 mt-2">První kroky s Kaspa</p>
                 </Link>
 
                 {/* Card 3 */}
-                <Link
-                  href="#"
-                  className={featureCard}
-                >
+                <Link href="#" className={featureCard}>
                   <Store className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Kde utratit</h3>
                   <p className="text-xs text-gray-400 mt-2">Obchodníci přijímající Kaspa</p>
                 </Link>
 
                 {/* Card 4 */}
-                <Link
-                  href="#"
-                  className={featureCard}
-                >
+                <Link href="#" className={featureCard}>
                   <Users className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Komunita</h3>
                   <p className="text-xs text-gray-400 mt-2">Připojte se k ostatním</p>
                 </Link>
 
                 {/* Card 5 */}
-                <Link
-                  href="#"
-                  className={featureCard}
-                >
+                <Link href="/faq" className={featureCard}>
                   <HelpCircle className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">FAQ</h3>
                   <p className="text-xs text-gray-400 mt-2">Často kladené dotazy</p>

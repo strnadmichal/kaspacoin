@@ -61,7 +61,7 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({ faqItems }) => {
   }
 
   return (
-    <div className="space-y-4">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
       {faqItems.map((item, index) => (
         <FAQItem
           key={item.id}

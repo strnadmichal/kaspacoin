@@ -52,7 +52,7 @@ export default async function FAQPage() {
 
         {/* FAQ Content */}
         <section className="container mx-auto px-6 pb-12">
-          <div className="max-w-4xl">
+          <div>
             <FAQAccordion faqItems={faqItems} />
           </div>
         </section>

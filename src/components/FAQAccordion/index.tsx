@@ -42,12 +42,12 @@ const FAQItem: React.FC<FAQItemProps> = ({ question, answer, isOpen, onToggle })
 export const FAQAccordion: React.FC<FAQAccordionProps> = ({ faqItems }) => {
   const [openItems, setOpenItems] = useState<Set<number>>(new Set())
 
-  const toggleItem = (index: number) => {
+  const toggleItem = (id: number) => {
     const newOpenItems = new Set(openItems)
-    if (newOpenItems.has(index)) {
-      newOpenItems.delete(index)
+    if (newOpenItems.has(id)) {
+      newOpenItems.delete(id)
     } else {
-      newOpenItems.add(index)
+      newOpenItems.add(id)
     }
     setOpenItems(newOpenItems)
   }
@@ -60,17 +60,34 @@ export const FAQAccordion: React.FC<FAQAccordionProps> = ({ faqItems }) => {
     )
   }
 
+  const half = Math.ceil(faqItems.length / 2)
+  const firstColumnItems = faqItems.slice(0, half)
+  const secondColumnItems = faqItems.slice(half)
+
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-      {faqItems.map((item, index) => (
-        <FAQItem
-          key={item.id}
-          question={item.question}
-          answer={item.answer}
-          isOpen={openItems.has(index)}
-          onToggle={() => toggleItem(index)}
-        />
-      ))}
+      <div className="flex flex-col gap-4">
+        {firstColumnItems.map((item) => (
+          <FAQItem
+            key={item.id}
+            question={item.question}
+            answer={item.answer}
+            isOpen={openItems.has(item.id)}
+            onToggle={() => toggleItem(item.id)}
+          />
+        ))}
+      </div>
+      <div className="flex flex-col gap-4">
+        {secondColumnItems.map((item) => (
+          <FAQItem
+            key={item.id}
+            question={item.question}
+            answer={item.answer}
+            isOpen={openItems.has(item.id)}
+            onToggle={() => toggleItem(item.id)}
+          />
+        ))}
+      </div>
     </div>
   )
 }

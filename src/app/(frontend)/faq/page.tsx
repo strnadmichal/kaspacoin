@@ -22,7 +22,7 @@ const queryFAQ = cache(async () => {
         equals: true,
       },
     },
-    sort: 'order',
+    sort: 'order createdAt',
     depth: 1,
     draft,
     overrideAccess: draft,

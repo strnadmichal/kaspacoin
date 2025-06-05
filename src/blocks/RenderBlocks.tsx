@@ -5,15 +5,13 @@ import type { Page } from '@/payload-types'
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
-import { ArticleContentComponent } from '@/blocks/ArticleContent/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
 import { StructuredArticleComponent } from '@/blocks/StructuredArticleBlock/Component'
 
-const blockComponents = {
+const blockComponents: Record<string, React.FC<any>> = {
   archive: ArchiveBlock,
   content: ContentBlock,
-  articleContent: ArticleContentComponent,
   structuredArticle: StructuredArticleComponent,
   cta: CallToActionBlock,
   formBlock: FormBlock,

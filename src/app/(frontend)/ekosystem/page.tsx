@@ -70,7 +70,7 @@ export default async function EcosystemPage() {
           </div>
         </section>
 
-        <section className="container mx-auto px-6 pb-12">
+        <section className="container mx-auto px-6 pb-24">
           <EcosystemClient data={ecosystemData} />
         </section>
       </div>

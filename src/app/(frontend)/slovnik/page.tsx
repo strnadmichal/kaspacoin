@@ -44,7 +44,7 @@ export default async function GlossaryPage() {
           </div>
         </section>
 
-        <section className="container mx-auto px-6 pb-12">
+        <section className="container mx-auto px-6 pb-24">
           <GlossaryList initialItems={items} />
         </section>
       </div>

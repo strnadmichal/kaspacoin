@@ -65,8 +65,10 @@ const queryUncategorizedFAQs = cache(async (): Promise<Faq[]> => {
 })
 
 export default async function FAQPage() {
-  const faqCategories = await queryFAQsByCategory()
-  const uncategorizedFaqs = await queryUncategorizedFAQs()
+  const [faqCategories, uncategorizedFaqs] = await Promise.all([
+    queryFAQsByCategory(),
+    queryUncategorizedFAQs(),
+  ])
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white relative">
@@ -85,7 +87,7 @@ export default async function FAQPage() {
         </section>
 
         {/* FAQ Content */}
-        <section className="container mx-auto px-6 pb-12 space-y-12">
+        <section className="container mx-auto px-6 pb-24 space-y-12">
           {uncategorizedFaqs.length > 0 && (
             <div>
               <h2 className="text-3xl font-bold mb-6 text-teal">Dotazy</h2>

@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import type { Metadata } from 'next'
 import {
   ArrowRight,
   TrendingUp,
@@ -19,6 +20,12 @@ import type { Post } from '@/payload-types'
 import { format } from 'date-fns'
 import { cs } from 'date-fns/locale'
 import { cache } from 'react'
+
+export const metadata: Metadata = {
+  title: 'Kaspacoin.cz - Kompletní zdroj o Kaspa v češtině',
+  description:
+    'Průvodce, články, novinky a vše, co potřebujete vědět o revoluční kryptoměně Kaspa založené na BlockDAG technologii.',
+}
 
 const featureCard = `group flex flex-col h-40 p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:bg-white/10 transition-all`
 
@@ -134,6 +141,8 @@ export default async function Home() {
                   <p className="text-xs text-gray-400 mt-2 mb-3">Připoj se k živé diskuzi</p>
                   <Link
                     href="https://discord.gg/hzzEE8DC"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="mt-auto flex items-center justify-center gap-2 text-xs text-white bg-white/10 hover:bg-white/20 transition-colors py-2 px-3 rounded-md"
                   >
                     <svg

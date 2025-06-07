@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Globe, Send } from 'lucide-react'
+import { Globe, Send, Star } from 'lucide-react'
 
 interface Resource {
   name: string
@@ -64,13 +64,7 @@ const EcosystemClient = ({ data }: { data: Category[] }) => {
       : data.filter((cat: Category) => cat.slug === selectedCategory)
 
   return (
-    <div className="container mx-auto px-6 py-12">
-      <h1 className="text-4xl font-bold">Ekosystém</h1>
-      <p className="text-gray-400 mt-2 mb-8 max-w-2xl">
-        Prozkoumejte širokou škálu projektů, nástrojů a zdrojů postavených komunitou a pro komunitu
-        Kaspa.
-      </p>
-
+    <>
       {/* Category Filters */}
       <div className="flex flex-wrap gap-2 mb-12">
         <button
@@ -125,7 +119,7 @@ const EcosystemClient = ({ data }: { data: Category[] }) => {
           </section>
         ))}
       </div>
-    </div>
+    </>
   )
 }
 

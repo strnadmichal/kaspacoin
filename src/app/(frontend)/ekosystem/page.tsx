@@ -1,8 +1,15 @@
+import type { Metadata } from 'next'
 import React from 'react'
 import EcosystemClient from './EcosystemClient'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { cache } from 'react'
+
+export const metadata: Metadata = {
+  title: 'Ekosystém | Kaspacoin.cz',
+  description:
+    'Prozkoumejte širokou škálu projektů, nástrojů a zdrojů postavených komunitou a pro komunitu Kaspa.',
+}
 
 // Using cache to optimize data fetching
 const getEcosystemData = cache(async () => {
@@ -48,5 +55,25 @@ const getEcosystemData = cache(async () => {
 
 export default async function EcosystemPage() {
   const ecosystemData = await getEcosystemData()
-  return <EcosystemClient data={ecosystemData} />
+  return (
+    <div className="flex flex-col min-h-screen bg-black text-white relative">
+      <div className="relative z-10">
+        <section className="container mx-auto px-6 py-12">
+          <div className="max-w-4xl">
+            <h1 className="text-5xl font-bold leading-tight mb-6">
+              Kaspa <span className="text-teal">Ekosystém</span>
+            </h1>
+            <p className="text-xl text-gray-400 max-w-3xl">
+              Prozkoumejte širokou škálu projektů, nástrojů a zdrojů postavených komunitou a pro
+              komunitu Kaspa.
+            </p>
+          </div>
+        </section>
+
+        <section className="container mx-auto px-6 pb-12">
+          <EcosystemClient data={ecosystemData} />
+        </section>
+      </div>
+    </div>
+  )
 }

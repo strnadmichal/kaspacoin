@@ -76,6 +76,7 @@ export interface Config {
     glossary: Glossary;
     merchants: Merchant;
     'merchant-categories': MerchantCategory;
+    'glossary-categories': GlossaryCategory;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -96,6 +97,7 @@ export interface Config {
     glossary: GlossarySelect<false> | GlossarySelect<true>;
     merchants: MerchantsSelect<false> | MerchantsSelect<true>;
     'merchant-categories': MerchantCategoriesSelect<false> | MerchantCategoriesSelect<true>;
+    'glossary-categories': GlossaryCategoriesSelect<false> | GlossaryCategoriesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -856,7 +858,7 @@ export interface Glossary {
   };
   slug?: string | null;
   slugLock?: boolean | null;
-  categories?: (number | Category)[] | null;
+  categories?: (number | GlossaryCategory)[] | null;
   /**
    * Zrušte zaškrtnutí pro skrytí pojmu z veřejného webu.
    */
@@ -864,6 +866,20 @@ export interface Glossary {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Kategorie pro pojmy ve slovníku.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "glossary-categories".
+ */
+export interface GlossaryCategory {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Seznam obchodníků a podniků, které přijímají Kaspa.
@@ -1111,6 +1127,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'merchant-categories';
         value: number | MerchantCategory;
+      } | null)
+    | ({
+        relationTo: 'glossary-categories';
+        value: number | GlossaryCategory;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1574,6 +1594,17 @@ export interface MerchantsSelect<T extends boolean = true> {
  * via the `definition` "merchant-categories_select".
  */
 export interface MerchantCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "glossary-categories_select".
+ */
+export interface GlossaryCategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   slugLock?: T;

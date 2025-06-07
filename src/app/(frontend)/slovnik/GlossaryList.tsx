@@ -2,16 +2,18 @@
 
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import type { Category, Glossary } from '@/payload-types'
+import type { Glossary, GlossaryCategory } from '@/payload-types'
 
 export function GlossaryList({ initialItems }: { initialItems: Glossary[] }) {
-  const [allCategories, setAllCategories] = useState<Category[]>([])
+  const [allCategories, setAllCategories] = useState<GlossaryCategory[]>([])
   const [activeCategory, setActiveCategory] = useState<number | null>(null)
 
   useEffect(() => {
     const categories = initialItems
       .flatMap((item) => item.categories || [])
-      .filter((cat): cat is Category => typeof cat === 'object' && cat !== null && 'id' in cat)
+      .filter(
+        (cat): cat is GlossaryCategory => typeof cat === 'object' && cat !== null && 'id' in cat,
+      )
       .filter((cat, index, self) => self.findIndex((c) => c.id === cat.id) === index)
 
     setAllCategories(categories)

@@ -47,7 +47,7 @@ export const Glossary: CollectionConfig = {
     {
       name: 'categories',
       type: 'relationship',
-      relationTo: 'categories',
+      relationTo: 'glossary-categories',
       hasMany: true,
       admin: {
         position: 'sidebar',

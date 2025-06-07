@@ -9,6 +9,7 @@ import { fileURLToPath } from 'url'
 import { Categories } from './collections/Categories'
 import { FAQ } from './collections/FAQ'
 import { Glossary } from './collections/Glossary'
+import { GlossaryCategories } from './collections/GlossaryCategories'
 import { Media } from './collections/Media'
 import { Merchants } from './collections/Merchants'
 import { MerchantCategories } from './collections/MerchantCategories'
@@ -78,6 +79,7 @@ export default buildConfig({
     Glossary,
     Merchants,
     MerchantCategories,
+    GlossaryCategories,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

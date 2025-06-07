@@ -133,6 +133,24 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
                   </>
                 )}
             </div>
+
+            {post.categories && Array.isArray(post.categories) && post.categories.length > 0 && (
+              <div className="flex flex-wrap items-center gap-2 mb-8">
+                {post.categories.map(
+                  (category) =>
+                    typeof category === 'object' &&
+                    category.title && (
+                      <span
+                        key={category.id}
+                        className="text-xs bg-teal/10 text-teal px-2 py-1 rounded-full"
+                      >
+                        {category.title}
+                      </span>
+                    ),
+                )}
+              </div>
+            )}
+
             <div className="max-w-4xl mx-auto">
               {content && <GlossaryRichText content={content} glossaryTerms={glossaryTerms} />}
             </div>

@@ -35,7 +35,7 @@ export const FAQ: CollectionConfig = {
       name: 'category',
       type: 'relationship',
       relationTo: 'faq-categories',
-      required: true,
+      required: false,
     },
     {
       name: 'isPublished',

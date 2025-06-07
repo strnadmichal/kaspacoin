@@ -446,7 +446,7 @@ export interface Faq {
     };
     [k: string]: unknown;
   };
-  category: number | FaqCategory;
+  category?: (number | null) | FaqCategory;
   /**
    * Zrušte zaškrtnutí pro skrytí otázky
    */

@@ -46,8 +46,27 @@ const queryFAQsByCategory = cache(async (): Promise<FaqCategoryWithFaqs[]> => {
   ) as FaqCategoryWithFaqs[]
 })
 
+const queryUncategorizedFAQs = cache(async (): Promise<Faq[]> => {
+  const payload = await getPayload({ config: configPromise })
+  const faqs = await payload.find({
+    collection: 'faq',
+    where: {
+      category: {
+        exists: false,
+      },
+      isPublished: {
+        equals: true,
+      },
+    },
+    sort: 'order createdAt',
+    depth: 1,
+  })
+  return faqs.docs
+})
+
 export default async function FAQPage() {
   const faqCategories = await queryFAQsByCategory()
+  const uncategorizedFaqs = await queryUncategorizedFAQs()
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white relative">
@@ -67,6 +86,13 @@ export default async function FAQPage() {
 
         {/* FAQ Content */}
         <section className="container mx-auto px-6 pb-12 space-y-12">
+          {uncategorizedFaqs.length > 0 && (
+            <div>
+              <h2 className="text-3xl font-bold mb-6 text-teal">Dotazy</h2>
+              <FAQAccordion faqItems={uncategorizedFaqs} />
+            </div>
+          )}
+
           {faqCategories.map((category) => (
             <div key={category.id}>
               <h2 className="text-3xl font-bold mb-6 text-teal">{category.name}</h2>

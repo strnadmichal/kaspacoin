@@ -43,6 +43,7 @@ export async function generateMetadata({
     collection: 'posts',
     where: { slug: { equals: slug } },
     limit: 1,
+    depth: 2,
   })
   const post = posts.docs[0]
   if (!post) return notFound()
@@ -115,11 +116,23 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
         <section className="container mx-auto px-6 py-12">
           <div className="max-w-4xl mx-auto">
             <h1 className="text-4xl md:text-5xl font-bold leading-tight mb-4">{title}</h1>
-            {publishedAt && (
-              <p className="text-gray-400 text-sm mb-8">
-                Publikováno {format(new Date(publishedAt), 'd. MMMM yyyy', { locale: cs })}
-              </p>
-            )}
+            <div className="flex items-center text-gray-400 text-sm mb-8">
+              {publishedAt && (
+                <span>
+                  Publikováno {format(new Date(publishedAt), 'd. MMMM yyyy', { locale: cs })}
+                </span>
+              )}
+              {post.populatedAuthors &&
+                Array.isArray(post.populatedAuthors) &&
+                post.populatedAuthors.length > 0 && (
+                  <>
+                    <span className="mx-2">•</span>
+                    <span>
+                      Autor: {post.populatedAuthors.map((author) => author.name || '').join(', ')}
+                    </span>
+                  </>
+                )}
+            </div>
             <div className="max-w-4xl mx-auto">
               {content && <GlossaryRichText content={content} glossaryTerms={glossaryTerms} />}
             </div>
@@ -139,6 +152,7 @@ export async function generateStaticParams() {
       collection: 'posts',
       where: { _status: { equals: 'published' } },
       limit: 1000,
+      depth: 0,
     })
 
     return posts.docs.map(({ slug }) => ({ slug: slug || '' }))

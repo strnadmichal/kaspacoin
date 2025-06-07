@@ -1,3 +1,4 @@
+import React from 'react'
 import Link from 'next/link'
 import {
   ArrowRight,
@@ -11,10 +12,47 @@ import {
 } from 'lucide-react'
 import BlockDagBackground from '@/components/MainPage/block-dag-background'
 import Image from 'next/image'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
+import type { Post } from '@/payload-types'
+import { format } from 'date-fns'
+import { cs } from 'date-fns/locale'
+import { cache } from 'react'
 
 const featureCard = `group flex flex-col h-40 p-5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-lg hover:bg-white/10 transition-all`
 
-export default function Home() {
+const getLatestPosts = cache(async (): Promise<Post[]> => {
+  const payload = await getPayload({ config: configPromise })
+  const result = await payload.find({
+    collection: 'posts',
+    where: {
+      _status: {
+        equals: 'published',
+      },
+    },
+    sort: '-publishedAt',
+    limit: 3,
+    depth: 2, // We need author data
+  })
+  return result.docs
+})
+
+function calculateReadingTime(content: any): number {
+  if (!content?.root?.children) return 1
+
+  const text = content.root.children
+    .map((child: any) => child.children?.map((c: any) => c.text).join(' ') || '')
+    .join(' ')
+
+  const wordsPerMinute = 200
+  const wordCount = text.split(/\s+/).length
+  const readingTime = Math.ceil(wordCount / wordsPerMinute)
+  return readingTime > 0 ? readingTime : 1
+}
+
+export default async function Home() {
+  const latestPosts = await getLatestPosts()
+
   return (
     <div className="flex flex-col min-h-full relative overflow-hidden">
       {/* Animated BlockDAG Background - adjusted opacity */}
@@ -121,57 +159,48 @@ export default function Home() {
               <div className="bg-white/5 backdrop-blur-sm rounded-xl p-6 border border-white/10 flex-grow mb-4 flex flex-col">
                 <div className="flex justify-between items-center mb-6">
                   <h2 className="font-medium text-xl">Nejnovější články</h2>
-                  <Link href="#" className="text-teal text-sm hover:underline flex items-center">
+                  <Link
+                    href="/clanky"
+                    className="text-teal text-sm hover:underline flex items-center"
+                  >
                     <span>Všechny články</span>
-                    <ExternalLink className="w-3 h-3 ml-1" />
+                    <ArrowRight className="w-3 h-3 ml-1" />
                   </Link>
                 </div>
 
                 <div className="flex flex-col flex-grow justify-between">
-                  <Link href="#" className="block group py-2">
-                    <h3 className="font-medium text-base group-hover:text-teal transition-colors">
-                      Kaspa: Budoucnost rychlých transakcí
-                    </h3>
-                    <p className="text-sm text-gray-400 mt-2">
-                      Jak Kaspa řeší problém škálovatelnosti pomocí BlockDAG technologie a proč je
-                      to důležité pro budoucnost kryptoměn...
-                    </p>
-                    <div className="flex items-center mt-3 text-xs text-gray-500">
-                      <span>15. 5. 2025</span>
-                      <span className="mx-2">•</span>
-                      <span>5 min čtení</span>
-                    </div>
-                  </Link>
-                  <div className="h-px bg-white/10 my-2" />
-                  <Link href="#" className="block group py-2">
-                    <h3 className="font-medium text-base group-hover:text-teal transition-colors">
-                      Průvodce peněženkami pro Kaspa
-                    </h3>
-                    <p className="text-sm text-gray-400 mt-2">
-                      Přehled nejlepších peněženek pro bezpečné uložení KAS tokenů a jejich výhody
-                      pro různé typy uživatelů...
-                    </p>
-                    <div className="flex items-center mt-3 text-xs text-gray-500">
-                      <span>10. 5. 2025</span>
-                      <span className="mx-2">•</span>
-                      <span>8 min čtení</span>
-                    </div>
-                  </Link>
-                  <div className="h-px bg-white/10 my-2" />
-                  <Link href="#" className="block group py-2">
-                    <h3 className="font-medium text-base group-hover:text-teal transition-colors">
-                      Jak těžit Kaspa v roce 2025
-                    </h3>
-                    <p className="text-sm text-gray-400 mt-2">
-                      Kompletní návod pro začátečníky i pokročilé těžaře, včetně doporučeného
-                      hardwaru a optimalizace nastavení...
-                    </p>
-                    <div className="flex items-center mt-3 text-xs text-gray-500">
-                      <span>5. 5. 2025</span>
-                      <span className="mx-2">•</span>
-                      <span>12 min čtení</span>
-                    </div>
-                  </Link>
+                  {latestPosts.map((post, i) => (
+                    <React.Fragment key={post.id}>
+                      <Link href={`/clanky/${post.slug}`} className="block group py-2">
+                        <h3 className="font-medium text-base group-hover:text-teal transition-colors">
+                          {post.title}
+                        </h3>
+                        <p className="text-sm text-gray-400 mt-2 line-clamp-2">
+                          {post.meta?.description || 'Přečtěte si více...'}
+                        </p>
+                        <div className="flex items-center mt-3 text-xs text-gray-500">
+                          {post.publishedAt && (
+                            <span>
+                              {format(new Date(post.publishedAt), 'd. M. yyyy', { locale: cs })}
+                            </span>
+                          )}
+                          {post.populatedAuthors && post.populatedAuthors.length > 0 && (
+                            <>
+                              <span className="mx-2">•</span>
+                              <span>
+                                {post.populatedAuthors
+                                  .map((author) => author.name || '')
+                                  .join(', ')}
+                              </span>
+                            </>
+                          )}
+                          <span className="mx-2">•</span>
+                          <span>{calculateReadingTime(post.content)} min čtení</span>
+                        </div>
+                      </Link>
+                      {i < latestPosts.length - 1 && <div className="h-px bg-white/10 my-2" />}
+                    </React.Fragment>
+                  ))}
                 </div>
               </div>
 

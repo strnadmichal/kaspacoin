@@ -60,6 +60,14 @@ const PostCard = ({ post }: { post: Post }) => (
         {post.publishedAt && (
           <span>{format(new Date(post.publishedAt), 'd. MMMM yyyy', { locale: cs })}</span>
         )}
+        {post.populatedAuthors &&
+          Array.isArray(post.populatedAuthors) &&
+          post.populatedAuthors.length > 0 && (
+            <>
+              <span className="mx-2">•</span>
+              <span>{post.populatedAuthors.map((author) => author.name || '').join(', ')}</span>
+            </>
+          )}
       </div>
     </div>
   </Link>

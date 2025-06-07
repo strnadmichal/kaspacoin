@@ -22,8 +22,8 @@ const queryGlossaryTerms = cache(async (): Promise<Glossary[]> => {
     collection: 'glossary',
     limit: 1000,
     where: {
-      isPublished: {
-        equals: true,
+      _status: {
+        equals: 'published',
       },
     },
   })
@@ -34,9 +34,9 @@ const queryGlossaryTerms = cache(async (): Promise<Glossary[]> => {
 export async function generateMetadata({
   params,
 }: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const { slug } = params
+  const { slug } = await params
   const payload = await getPayload({ config: configPromise })
 
   const posts = await payload.find({
@@ -69,8 +69,8 @@ export async function generateMetadata({
 }
 
 // Main component for the glossary term page
-export default async function ArticlePage({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default async function ArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
   const payload = await getPayload({ config: configPromise })
   const { isEnabled: draft } = await draftMode()
 
@@ -137,7 +137,7 @@ export async function generateStaticParams() {
     const payload = await getPayload({ config: configPromise })
     const posts = await payload.find({
       collection: 'posts',
-      where: { isPublished: { equals: true } },
+      where: { _status: { equals: 'published' } },
       limit: 1000,
     })
 

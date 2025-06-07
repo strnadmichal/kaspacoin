@@ -1,25 +1,26 @@
 import React from 'react'
-import { RichText } from '@payloadcms/richtext-lexical/react' // Použijeme existující RichText komponentu od Payloadu
+import RichText from '@/components/RichText' // Použijeme náš vlastní RichText wrapper
+import type { Glossary } from '@/payload-types'
+import { GlossaryRichText } from '@/components/GlossaryRichText'
 
 // Typ pro props, měl by odpovídat struktuře RichTextBlock z payload-types.ts
 interface RichTextBlockProps {
   richText: any // Lexical editor data
   blockType: 'richTextBlock'
+  glossaryTerms?: Glossary[]
 }
 
-export const RichTextBlockComponent: React.FC<RichTextBlockProps> = ({ richText }) => {
+export const RichTextBlockComponent: React.FC<RichTextBlockProps> = ({
+  richText,
+  glossaryTerms,
+}) => {
   if (!richText) {
     return null
   }
 
-  return (
-    <div className="prose prose-invert prose-lg max-w-none">
-      {/* 
-        Renderujeme richText data pomocí Payload RichText komponenty.
-        Třídy "prose" zajišťují základní typografické styly pro text z editoru.
-        max-w-none odstraní výchozí omezení šířky prose, pokud chceme plnou šířku kontejneru.
-      */}
-      <RichText data={richText} />
-    </div>
+  return glossaryTerms ? (
+    <GlossaryRichText content={richText} glossaryTerms={glossaryTerms} />
+  ) : (
+    <RichText data={richText} />
   )
-} 
+}

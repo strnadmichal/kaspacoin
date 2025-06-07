@@ -1,13 +1,14 @@
 import { cn } from '@/utilities/ui'
 import React from 'react'
 import RichText from '@/components/RichText'
-
-import type { ContentBlock as ContentBlockProps } from '@/payload-types'
-
+import type { ContentBlock as ContentBlockProps, Glossary } from '@/payload-types'
+import { GlossaryRichText } from '../../components/GlossaryRichText'
 import { CMSLink } from '../../components/Link'
 
-export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
-  const { columns } = props
+export const ContentBlock: React.FC<ContentBlockProps & { glossaryTerms?: Glossary[] }> = (
+  props,
+) => {
+  const { columns, glossaryTerms } = props
 
   const colsSpanClasses = {
     full: '12',
@@ -31,7 +32,12 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
                 })}
                 key={index}
               >
-                {richText && <RichText data={richText} enableGutter={false} />}
+                {richText &&
+                  (glossaryTerms ? (
+                    <GlossaryRichText content={richText} glossaryTerms={glossaryTerms} />
+                  ) : (
+                    <RichText data={richText} enableGutter={false} />
+                  ))}
 
                 {enableLink && <CMSLink {...link} />}
               </div>

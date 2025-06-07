@@ -1,6 +1,9 @@
 import React, { Fragment } from 'react'
 
-import type { Page } from '@/payload-types'
+import type { Glossary, Page } from '@/payload-types'
+import { getPayload } from 'payload'
+import configPromise from '@payload-config'
+import { cache } from 'react'
 
 import { ArchiveBlock } from '@/blocks/ArchiveBlock/Component'
 import { CallToActionBlock } from '@/blocks/CallToAction/Component'
@@ -18,10 +21,22 @@ const blockComponents: Record<string, React.FC<any>> = {
   mediaBlock: MediaBlock,
 }
 
+const getGlossaryTerms = cache(async () => {
+  const payload = await getPayload({ config: configPromise })
+  const terms = await payload.find({
+    collection: 'glossary',
+    where: { isPublished: { equals: true } },
+    limit: 500,
+    depth: 0,
+  })
+  return terms.docs
+})
+
 export const RenderBlocks: React.FC<{
-  blocks: Page['layout'][0][]
-}> = (props) => {
+  blocks: Page['layout']
+}> = async (props) => {
   const { blocks } = props
+  const glossaryTerms: Glossary[] = await getGlossaryTerms()
 
   const hasBlocks = blocks && Array.isArray(blocks) && blocks.length > 0
 
@@ -35,11 +50,12 @@ export const RenderBlocks: React.FC<{
             const Block = blockComponents[blockType]
 
             if (Block) {
+              const blockProps = { ...block, glossaryTerms }
               return blockType === 'structuredArticle' ? (
-                <Block key={index} {...block} />
+                <Block key={index} {...blockProps} />
               ) : (
                 <div className="my-16" key={index}>
-                  <Block {...block} disableInnerContainer />
+                  <Block {...blockProps} disableInnerContainer />
                 </div>
               )
             }

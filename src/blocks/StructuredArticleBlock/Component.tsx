@@ -9,6 +9,7 @@ import { ImageBlockComponent } from '../ImageBlock/Component'
 
 // Importujeme novou samostatnou Table of Contents komponentu
 import { TableOfContents, type TocItem } from '../../components/TableOfContents' // Správná cesta
+import type { Glossary } from '@/payload-types'
 
 // Typy (budou generovány Payloadem, toto jsou zástupné)
 interface HeadingData {
@@ -35,7 +36,8 @@ interface ImageData {
 
 type ArticleSection = HeadingData | RichTextData | ImageData // Union type pro všechny možné sekce
 
-export interface StructuredArticleBlockProps { // Exportujeme, aby ji RenderBlocks mohl použít
+export interface StructuredArticleBlockProps {
+  // Exportujeme, aby ji RenderBlocks mohl použít
   articleSections: ArticleSection[]
   enableTableOfContents?: boolean
   blockType: 'structuredArticle' // Důležité pro RenderBlocks
@@ -58,10 +60,9 @@ const generateSlug = (text: string) => {
     .substring(0, 50) // Omezí délku
 }
 
-export const StructuredArticleComponent: React.FC<StructuredArticleBlockProps> = ({
-  articleSections,
-  enableTableOfContents,
-}) => {
+export const StructuredArticleComponent: React.FC<
+  StructuredArticleBlockProps & { glossaryTerms?: Glossary[] }
+> = ({ articleSections, enableTableOfContents, glossaryTerms }) => {
   const [tocItems, setTocItems] = useState<TocItem[]>([])
   const [sectionsWithIds, setSectionsWithIds] = useState<ArticleSection[]>([])
 
@@ -72,11 +73,11 @@ export const StructuredArticleComponent: React.FC<StructuredArticleBlockProps> =
         const headingText = section.text || ''
         // Používáme _id z Payloadu pro větší unicitu, pokud je dostupné
         const uniqueId = section.id || `${generateSlug(headingText)}-${section._id || index}`
-        
+
         newTocItems.push({
           id: uniqueId,
           text: headingText,
-          level: parseInt(section.level.charAt(1)) -1, // h2->1, h3->2, h4->3
+          level: parseInt(section.level.charAt(1)) - 1, // h2->1, h3->2, h4->3
         })
         return { ...section, id: uniqueId } // Přidáme/aktualizujeme ID přímo do dat sekce
       }
@@ -131,7 +132,11 @@ export const StructuredArticleComponent: React.FC<StructuredArticleBlockProps> =
                           onClick={() => scrollToSection(item.id)}
                           className={`text-left text-sm transition-colors w-full py-2 px-3 rounded-md block text-gray-400 hover:text-white hover:bg-white/5 ${
                             // Úrovně v TocItem jsou 1 (H2), 2 (H3), 3 (H4)
-                            item.level === 2 ? 'ml-4 text-xs' : item.level === 3 ? 'ml-8 text-xs' : ''
+                            item.level === 2
+                              ? 'ml-4 text-xs'
+                              : item.level === 3
+                                ? 'ml-8 text-xs'
+                                : ''
                           }`}
                         >
                           <span className="line-clamp-2">{item.text}</span>
@@ -150,13 +155,16 @@ export const StructuredArticleComponent: React.FC<StructuredArticleBlockProps> =
           {sectionsWithIds.map((section, index) => {
             const Component = sectionComponents[section.blockType]
             if (Component) {
-              const key = section._id || `section-${index}`;
+              const key = section._id || `section-${index}`
               // Předáváme id prop pouze do HeadingBlockComponent, pokud byl vygenerován
-              const componentProps = section.blockType === 'headingBlock' && section.id 
-                ? { ...section, id: section.id } 
-                : section;
-              
-              // @ts-expect-error - Problém s typováním sjednocených props, Payload typy by to měly vyřešit
+              let componentProps: any =
+                section.blockType === 'headingBlock' && section.id
+                  ? { ...section, id: section.id }
+                  : section
+              if (glossaryTerms) {
+                componentProps = { ...componentProps, glossaryTerms }
+              }
+
               return <Component key={key} {...componentProps} />
             }
             return <div key={`unknown-${index}`}>Neznámý typ bloku: {section.blockType}</div>
@@ -165,4 +173,4 @@ export const StructuredArticleComponent: React.FC<StructuredArticleBlockProps> =
       </div>
     </div>
   )
-} 
+}

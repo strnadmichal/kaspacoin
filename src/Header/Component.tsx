@@ -9,7 +9,7 @@ const staticHeaderData = {
     { link: { type: 'custom' as const, url: '#', label: 'Články' } },
     { link: { type: 'custom' as const, url: '/faq', label: 'FAQ' } },
     { link: { type: 'custom' as const, url: '#', label: 'Obchodníci' } },
-    { link: { type: 'custom' as const, url: '#', label: 'Slovník' } },
+    { link: { type: 'custom' as const, url: '/slovnik', label: 'Slovník' } },
     { link: { type: 'custom' as const, url: '#', label: 'Komunita' } },
   ],
   updatedAt: new Date().toISOString(),

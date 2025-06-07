@@ -73,6 +73,7 @@ export interface Config {
     categories: Category;
     users: User;
     faq: Faq;
+    glossary: Glossary;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -90,6 +91,7 @@ export interface Config {
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
+    glossary: GlossarySelect<false> | GlossarySelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -824,6 +826,43 @@ export interface Faq {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "glossary".
+ */
+export interface Glossary {
+  id: number;
+  term: string;
+  /**
+   * Krátký, jedno-dvěvětný popis pojmu, který se zobrazí v seznamu na hlavní stránce slovníku.
+   */
+  summary?: string | null;
+  definition: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  slug?: string | null;
+  slugLock?: boolean | null;
+  categories?: (number | Category)[] | null;
+  /**
+   * Zrušte zaškrtnutí pro skrytí pojmu z veřejného webu.
+   */
+  isPublished?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
 export interface Redirect {
@@ -1018,6 +1057,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'faq';
         value: number | Faq;
+      } | null)
+    | ({
+        relationTo: 'glossary';
+        value: number | Glossary;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1433,6 +1476,22 @@ export interface FaqSelect<T extends boolean = true> {
   category?: T;
   isPublished?: T;
   order?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "glossary_select".
+ */
+export interface GlossarySelect<T extends boolean = true> {
+  term?: T;
+  summary?: T;
+  definition?: T;
+  slug?: T;
+  slugLock?: T;
+  categories?: T;
+  isPublished?: T;
   updatedAt?: T;
   createdAt?: T;
   _status?: T;

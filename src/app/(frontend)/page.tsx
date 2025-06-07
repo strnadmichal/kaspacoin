@@ -52,9 +52,9 @@ export default function Home() {
               </div>
 
               {/* Feature cards grid with consistent spacing and equal heights */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 text-center">
                 {/* Card 1 */}
-                <Link href="#" className={featureCard}>
+                <Link href="/slovnik" className={featureCard}>
                   <BookOpen className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Slovník Pojmů</h3>
                   <p className="text-xs text-gray-400 mt-2">Vysvětlení krypto terminologie</p>

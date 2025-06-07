@@ -10,6 +10,8 @@ import { Categories } from './collections/Categories'
 import { FAQ } from './collections/FAQ'
 import { Glossary } from './collections/Glossary'
 import { Media } from './collections/Media'
+import { Merchants } from './collections/Merchants'
+import { MerchantCategories } from './collections/MerchantCategories'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
@@ -66,7 +68,17 @@ export default buildConfig({
       connectionString: process.env.POSTGRES_URL || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users, FAQ, Glossary],
+  collections: [
+    Pages,
+    Posts,
+    Media,
+    Categories,
+    Users,
+    FAQ,
+    Glossary,
+    Merchants,
+    MerchantCategories,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [

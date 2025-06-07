@@ -106,7 +106,7 @@ export default async function Home() {
                 </Link>
 
                 {/* Card 3 */}
-                <Link href="#" className={featureCard}>
+                <Link href="/obchodnici" className={featureCard}>
                   <Store className="w-5 h-5 text-teal mb-3" />
                   <h3 className="font-medium text-sm">Kde utratit</h3>
                   <p className="text-xs text-gray-400 mt-2">Obchodníci přijímající Kaspa</p>

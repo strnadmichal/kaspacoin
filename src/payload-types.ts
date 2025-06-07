@@ -74,6 +74,8 @@ export interface Config {
     users: User;
     faq: Faq;
     glossary: Glossary;
+    merchants: Merchant;
+    'merchant-categories': MerchantCategory;
     redirects: Redirect;
     forms: Form;
     'form-submissions': FormSubmission;
@@ -92,6 +94,8 @@ export interface Config {
     users: UsersSelect<false> | UsersSelect<true>;
     faq: FaqSelect<false> | FaqSelect<true>;
     glossary: GlossarySelect<false> | GlossarySelect<true>;
+    merchants: MerchantsSelect<false> | MerchantsSelect<true>;
+    'merchant-categories': MerchantCategoriesSelect<false> | MerchantCategoriesSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     forms: FormsSelect<false> | FormsSelect<true>;
     'form-submissions': FormSubmissionsSelect<false> | FormSubmissionsSelect<true>;
@@ -862,6 +866,44 @@ export interface Glossary {
   _status?: ('draft' | 'published') | null;
 }
 /**
+ * Seznam obchodníků a podniků, které přijímají Kaspa.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merchants".
+ */
+export interface Merchant {
+  id: number;
+  name: string;
+  isPublished?: boolean | null;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  description: string;
+  website: string;
+  logo: number | Media;
+  categories: (number | MerchantCategory)[];
+  address?: {
+    street?: string | null;
+    city?: string | null;
+    zip?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Kategorie pro obchodníky (např. E-shopy, Služby, Kavárny).
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merchant-categories".
+ */
+export interface MerchantCategory {
+  id: number;
+  title: string;
+  slug?: string | null;
+  slugLock?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
  */
@@ -1061,6 +1103,14 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'glossary';
         value: number | Glossary;
+      } | null)
+    | ({
+        relationTo: 'merchants';
+        value: number | Merchant;
+      } | null)
+    | ({
+        relationTo: 'merchant-categories';
+        value: number | MerchantCategory;
       } | null)
     | ({
         relationTo: 'redirects';
@@ -1495,6 +1545,40 @@ export interface GlossarySelect<T extends boolean = true> {
   updatedAt?: T;
   createdAt?: T;
   _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merchants_select".
+ */
+export interface MerchantsSelect<T extends boolean = true> {
+  name?: T;
+  isPublished?: T;
+  slug?: T;
+  slugLock?: T;
+  description?: T;
+  website?: T;
+  logo?: T;
+  categories?: T;
+  address?:
+    | T
+    | {
+        street?: T;
+        city?: T;
+        zip?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "merchant-categories_select".
+ */
+export interface MerchantCategoriesSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

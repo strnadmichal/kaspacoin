@@ -20,6 +20,7 @@ import type { Post } from '@/payload-types'
 import { format } from 'date-fns'
 import { cs } from 'date-fns/locale'
 import { cache } from 'react'
+import { PriceCard } from '@/components/PriceCard'
 
 export const metadata: Metadata = {
   title: 'Kaspacoin.cz - Kompletní zdroj o Kaspa v češtině',
@@ -215,51 +216,7 @@ export default async function Home() {
               </div>
 
               {/* Price card */}
-              <div className="bg-white/5 backdrop-blur-sm rounded-xl p-4 border border-white/10 h-40">
-                <div className="flex justify-between items-center mb-3">
-                  <h2 className="font-medium text-base">Aktuální cena</h2>
-                  <span className="text-xs text-gray-400">Aktualizováno před 5 min</span>
-                </div>
-
-                <div className="flex items-center gap-3 mb-3">
-                  <div className="size-5 rounded-full bg-white flex items-center justify-center">
-                    <Image
-                      src="/logo.svg"
-                      alt="Kaspacoin.cz Logo"
-                      width={20}
-                      height={20}
-                      className="w-5 h-5"
-                      priority
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="text-lg font-bold">$0.1247</div>
-                    <div className="flex items-center text-teal text-xs px-1.5 py-0.5 bg-teal/10 rounded-full">
-                      <TrendingUp className="w-2.5 h-2.5 mr-1" />
-                      <span>+5.8%</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-4 gap-2 text-xs">
-                  <div>
-                    <div className="text-gray-400 text-xs mb-0.5">Market Cap</div>
-                    <div className="font-medium text-xs">$1.45B</div>
-                  </div>
-                  <div>
-                    <div className="text-gray-400 text-xs mb-0.5">Volume</div>
-                    <div className="font-medium text-xs">$87.2M</div>
-                  </div>
-                  <div>
-                    <div className="text-gray-400 text-xs mb-0.5">Rank</div>
-                    <div className="font-medium text-xs">#42</div>
-                  </div>
-                  <div>
-                    <div className="text-gray-400 text-xs mb-0.5">Hashrate</div>
-                    <div className="font-medium text-xs">1.2 EH/s</div>
-                  </div>
-                </div>
-              </div>
+              <PriceCard />
             </div>
           </div>
         </main>

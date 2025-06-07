@@ -133,7 +133,7 @@ export default async function Home() {
                   <h3 className="font-medium text-sm">Discord Chat</h3>
                   <p className="text-xs text-gray-400 mt-2 mb-3">Připoj se k živé diskuzi</p>
                   <Link
-                    href="#"
+                    href="https://discord.gg/hzzEE8DC"
                     className="mt-auto flex items-center justify-center gap-2 text-xs text-white bg-white/10 hover:bg-white/20 transition-colors py-2 px-3 rounded-md"
                   >
                     <svg

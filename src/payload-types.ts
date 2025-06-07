@@ -74,8 +74,8 @@ export interface Config {
     sources: Source;
     categories: Category;
     'glossary-categories': GlossaryCategory;
-    'faq-categories': FaqCategory;
     'merchant-categories': MerchantCategory;
+    'faq-categories': FaqCategory;
     'source-categories': SourceCategory;
     pages: Page;
     media: Media;
@@ -98,8 +98,8 @@ export interface Config {
     sources: SourcesSelect<false> | SourcesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     'glossary-categories': GlossaryCategoriesSelect<false> | GlossaryCategoriesSelect<true>;
-    'faq-categories': FaqCategoriesSelect<false> | FaqCategoriesSelect<true>;
     'merchant-categories': MerchantCategoriesSelect<false> | MerchantCategoriesSelect<true>;
+    'faq-categories': FaqCategoriesSelect<false> | FaqCategoriesSelect<true>;
     'source-categories': SourceCategoriesSelect<false> | SourceCategoriesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
@@ -1173,12 +1173,12 @@ export interface PayloadLockedDocument {
         value: number | GlossaryCategory;
       } | null)
     | ({
-        relationTo: 'faq-categories';
-        value: number | FaqCategory;
-      } | null)
-    | ({
         relationTo: 'merchant-categories';
         value: number | MerchantCategory;
+      } | null)
+    | ({
+        relationTo: 'faq-categories';
+        value: number | FaqCategory;
       } | null)
     | ({
         relationTo: 'source-categories';
@@ -1393,21 +1393,21 @@ export interface GlossaryCategoriesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "faq-categories_select".
- */
-export interface FaqCategoriesSelect<T extends boolean = true> {
-  name?: T;
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "merchant-categories_select".
  */
 export interface MerchantCategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-categories_select".
+ */
+export interface FaqCategoriesSelect<T extends boolean = true> {
+  name?: T;
   updatedAt?: T;
   createdAt?: T;
 }

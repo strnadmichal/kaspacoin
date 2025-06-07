@@ -10,7 +10,7 @@ const staticHeaderData = {
     { link: { type: 'custom' as const, url: '/faq', label: 'FAQ' } },
     { link: { type: 'custom' as const, url: '/obchodnici', label: 'Obchodníci' } },
     { link: { type: 'custom' as const, url: '/slovnik', label: 'Slovník' } },
-    { link: { type: 'custom' as const, url: '#', label: 'Komunita' } },
+    { link: { type: 'custom' as const, url: '/ekosystem', label: 'Ekosystém' } },
   ],
   updatedAt: new Date().toISOString(),
   createdAt: new Date().toISOString(),

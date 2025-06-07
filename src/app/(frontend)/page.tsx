@@ -9,6 +9,7 @@ import {
   HelpCircle,
   BookOpen,
   Rocket,
+  Orbit,
 } from 'lucide-react'
 import BlockDagBackground from '@/components/MainPage/block-dag-background'
 import Image from 'next/image'
@@ -113,10 +114,10 @@ export default async function Home() {
                 </Link>
 
                 {/* Card 4 */}
-                <Link href="#" className={featureCard}>
-                  <Users className="w-5 h-5 text-teal mb-3" />
-                  <h3 className="font-medium text-sm">Komunita</h3>
-                  <p className="text-xs text-gray-400 mt-2">Připojte se k ostatním</p>
+                <Link href="/ekosystem" className={featureCard}>
+                  <Orbit className="w-5 h-5 text-teal mb-3" />
+                  <h3 className="font-medium text-sm">Ekosystém</h3>
+                  <p className="text-xs text-gray-400 mt-2">Prozkoumejte ekosystém Kaspa</p>
                 </Link>
 
                 {/* Card 5 */}

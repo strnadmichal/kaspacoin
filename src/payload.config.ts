@@ -16,6 +16,8 @@ import { MerchantCategories } from './collections/MerchantCategories'
 import { Pages } from './collections/Pages'
 import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
+import { Sources } from './collections/Sources'
+import { SourceCategories } from './collections/SourceCategories'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -80,6 +82,8 @@ export default buildConfig({
     Pages,
     Media,
     Users,
+    Sources,
+    SourceCategories,
   ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],

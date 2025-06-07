@@ -18,6 +18,7 @@ import { Posts } from './collections/Posts'
 import { Users } from './collections/Users'
 import { Sources } from './collections/Sources'
 import { SourceCategories } from './collections/SourceCategories'
+import { FAQCategories } from './collections/FAQCategories'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
 import { plugins } from './plugins'
@@ -79,6 +80,7 @@ export default buildConfig({
     Sources,
     Categories,
     GlossaryCategories,
+    FAQCategories,
     MerchantCategories,
     SourceCategories,
     Pages,

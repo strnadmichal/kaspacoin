@@ -33,31 +33,9 @@ export const FAQ: CollectionConfig = {
     },
     {
       name: 'category',
-      type: 'select',
+      type: 'relationship',
+      relationTo: 'faq-categories',
       required: true,
-      defaultValue: 'zakladni',
-      options: [
-        {
-          label: 'Základní',
-          value: 'zakladni',
-        },
-        {
-          label: 'Technické',
-          value: 'technicke',
-        },
-        {
-          label: 'Těžba',
-          value: 'tezba',
-        },
-        {
-          label: 'Peněženky',
-          value: 'penezenky',
-        },
-        {
-          label: 'Obchodování',
-          value: 'obchodovani',
-        },
-      ],
     },
     {
       name: 'isPublished',

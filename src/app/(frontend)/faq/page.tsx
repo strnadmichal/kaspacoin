@@ -2,8 +2,8 @@ import type { Metadata } from 'next'
 import { FAQAccordion } from '@/components/FAQAccordion'
 import configPromise from '@payload-config'
 import { getPayload } from 'payload'
-import { draftMode } from 'next/headers'
 import React, { cache } from 'react'
+import type { Faq, FaqCategory } from '@/payload-types'
 
 export const metadata: Metadata = {
   title: 'FAQ - Často kladené dotazy | Kaspacoin.cz',
@@ -11,28 +11,43 @@ export const metadata: Metadata = {
     'Odpovědi na nejčastější otázky o Kaspa kryptoměně, BlockDAG technologii, těžbě a peněženkách.',
 }
 
-const queryFAQ = cache(async () => {
-  const { isEnabled: draft } = await draftMode()
+interface FaqCategoryWithFaqs extends FaqCategory {
+  faqs: Faq[]
+}
+
+const queryFAQsByCategory = cache(async (): Promise<FaqCategoryWithFaqs[]> => {
   const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'faq',
-    where: {
-      isPublished: {
-        equals: true,
-      },
-    },
-    sort: 'order createdAt',
-    depth: 1,
-    draft,
-    overrideAccess: draft,
+  const categories = await payload.find({
+    collection: 'faq-categories',
+    sort: 'name',
+    depth: 0,
   })
 
-  return result.docs || []
+  for (const category of categories.docs) {
+    const faqs = await payload.find({
+      collection: 'faq',
+      where: {
+        'category.id': {
+          equals: category.id,
+        },
+        isPublished: {
+          equals: true,
+        },
+      },
+      sort: 'order createdAt',
+      depth: 1,
+    })
+    ;(category as FaqCategoryWithFaqs).faqs = faqs.docs
+  }
+
+  return categories.docs.filter(
+    (c) => (c as FaqCategoryWithFaqs).faqs && (c as FaqCategoryWithFaqs).faqs.length > 0,
+  ) as FaqCategoryWithFaqs[]
 })
 
 export default async function FAQPage() {
-  const faqItems = await queryFAQ()
+  const faqCategories = await queryFAQsByCategory()
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white relative">
@@ -51,10 +66,13 @@ export default async function FAQPage() {
         </section>
 
         {/* FAQ Content */}
-        <section className="container mx-auto px-6 pb-12">
-          <div>
-            <FAQAccordion faqItems={faqItems} />
-          </div>
+        <section className="container mx-auto px-6 pb-12 space-y-12">
+          {faqCategories.map((category) => (
+            <div key={category.id}>
+              <h2 className="text-3xl font-bold mb-6 text-teal">{category.name}</h2>
+              <FAQAccordion faqItems={category.faqs} />
+            </div>
+          ))}
         </section>
       </div>
     </div>

@@ -74,6 +74,7 @@ export interface Config {
     sources: Source;
     categories: Category;
     'glossary-categories': GlossaryCategory;
+    'faq-categories': FaqCategory;
     'merchant-categories': MerchantCategory;
     'source-categories': SourceCategory;
     pages: Page;
@@ -97,6 +98,7 @@ export interface Config {
     sources: SourcesSelect<false> | SourcesSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     'glossary-categories': GlossaryCategoriesSelect<false> | GlossaryCategoriesSelect<true>;
+    'faq-categories': FaqCategoriesSelect<false> | FaqCategoriesSelect<true>;
     'merchant-categories': MerchantCategoriesSelect<false> | MerchantCategoriesSelect<true>;
     'source-categories': SourceCategoriesSelect<false> | SourceCategoriesSelect<true>;
     pages: PagesSelect<false> | PagesSelect<true>;
@@ -444,7 +446,7 @@ export interface Faq {
     };
     [k: string]: unknown;
   };
-  category: 'zakladni' | 'technicke' | 'tezba' | 'penezenky' | 'obchodovani';
+  category: number | FaqCategory;
   /**
    * Zrušte zaškrtnutí pro skrytí otázky
    */
@@ -456,6 +458,18 @@ export interface Faq {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
+}
+/**
+ * Kategorie pro často kladené dotazy.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-categories".
+ */
+export interface FaqCategory {
+  id: number;
+  name: string;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Zdroje a projekty v ekosystému Kaspa.
@@ -1159,6 +1173,10 @@ export interface PayloadLockedDocument {
         value: number | GlossaryCategory;
       } | null)
     | ({
+        relationTo: 'faq-categories';
+        value: number | FaqCategory;
+      } | null)
+    | ({
         relationTo: 'merchant-categories';
         value: number | MerchantCategory;
       } | null)
@@ -1370,6 +1388,15 @@ export interface GlossaryCategoriesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   slugLock?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "faq-categories_select".
+ */
+export interface FaqCategoriesSelect<T extends boolean = true> {
+  name?: T;
   updatedAt?: T;
   createdAt?: T;
 }

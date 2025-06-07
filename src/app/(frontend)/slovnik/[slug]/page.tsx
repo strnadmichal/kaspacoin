@@ -9,16 +9,17 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
+// Define Props to allow params to be awaited
+type Props = {
+  params: Promise<{ slug: string }> | { slug: string }
+}
+
 // Force all dynamic pages to be static
 export const dynamic = 'force-static'
 
 // Generate metadata for the page
-export async function generateMetadata({
-  params,
-}: {
-  params: { slug: string }
-}): Promise<Metadata> {
-  const { slug } = params
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
   const payload = await getPayload({ config: configPromise })
   const { isEnabled: draft } = await draftMode()
 
@@ -48,8 +49,8 @@ export async function generateMetadata({
 }
 
 // Main component for the glossary term page
-export default async function GlossaryTermPage({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default async function GlossaryTermPage({ params }: Props) {
+  const { slug } = await params
   const payload = await getPayload({ config: configPromise })
   const { isEnabled: draft } = await draftMode()
 

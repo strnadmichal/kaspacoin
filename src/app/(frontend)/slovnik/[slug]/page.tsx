@@ -3,23 +3,22 @@ import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import { notFound } from 'next/navigation'
-import type { Glossary } from '@/payload-types'
+
 import RichText from '@/components/RichText'
 import type { Metadata } from 'next'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 
-// Define Props to allow params to be awaited
-type Props = {
-  params: Promise<{ slug: string }> | { slug: string }
+type Args = {
+  params: Promise<{ slug: string }>
 }
 
 // Force all dynamic pages to be static
 export const dynamic = 'force-static'
 
 // Generate metadata for the page
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params
+export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {
+  const { slug } = await paramsPromise
   const payload = await getPayload({ config: configPromise })
   const { isEnabled: draft } = await draftMode()
 
@@ -49,8 +48,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // Main component for the glossary term page
-export default async function GlossaryTermPage({ params }: Props) {
-  const { slug } = await params
+export default async function GlossaryTermPage({ params: paramsPromise }: Args) {
+  const { slug } = await paramsPromise
   const payload = await getPayload({ config: configPromise })
   const { isEnabled: draft } = await draftMode()
 

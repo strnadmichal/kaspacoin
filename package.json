@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "cross-env NODE_OPTIONS=--no-deprecation next build",
-    "postbuild": "next-sitemap --config next-sitemap.config.cjs",
+    "postbuild": "pnpm payload migrate && next-sitemap --config next-sitemap.config.cjs",
     "ci": "payload migrate && pnpm build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "dev:prod": "cross-env NODE_OPTIONS=--no-deprecation rm -rf .next && pnpm build && pnpm start",
@@ -20,6 +20,7 @@
     "start": "cross-env NODE_OPTIONS=--no-deprecation next start"
   },
   "dependencies": {
+    "@neondatabase/serverless": "^1.0.1",
     "@payloadcms/admin-bar": "3.38.0",
     "@payloadcms/db-vercel-postgres": "3.38.0",
     "@payloadcms/live-preview-react": "3.38.0",

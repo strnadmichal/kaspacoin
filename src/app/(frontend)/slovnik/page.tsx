@@ -4,27 +4,35 @@ import { getPayload } from 'payload'
 import React, { cache } from 'react'
 import { GlossaryList } from './GlossaryList'
 
+// Use ISR to regenerate pages every 10 minutes
+export const revalidate = 600
+
 export const metadata: Metadata = {
   title: 'Slovník pojmů | Kaspacoin.cz',
   description: 'Vysvětlení důležitých pojmů ze světa kryptoměn, blockchainu a Kaspa ekosystému.',
 }
 
 const queryGlossary = cache(async () => {
-  const payload = await getPayload({ config: configPromise })
+  try {
+    const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'glossary',
-    where: {
-      isPublished: {
-        equals: true,
+    const result = await payload.find({
+      collection: 'glossary',
+      where: {
+        isPublished: {
+          equals: true,
+        },
       },
-    },
-    sort: 'term',
-    limit: 1000,
-    depth: 2, // Make sure we get category data
-  })
+      sort: 'term',
+      limit: 1000,
+      depth: 2, // Make sure we get category data
+    })
 
-  return result.docs || []
+    return result.docs || []
+  } catch (error) {
+    console.error('Error fetching glossary data during build:', error)
+    return []
+  }
 })
 
 export default async function GlossaryPage() {

@@ -2,10 +2,12 @@ import React from 'react'
 import type { Metadata } from 'next'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import { notFound } from 'next/navigation'
 import { cache } from 'react'
 import type { Merchant, MerchantCategory } from '@/payload-types'
 import { MerchantList } from './MerchantList'
+
+// Use ISR to regenerate pages every 10 minutes
+export const revalidate = 600
 
 export const metadata: Metadata = {
   title: 'Obchodníci přijímající Kaspa | Kaspacoin.cz',
@@ -14,40 +16,46 @@ export const metadata: Metadata = {
 }
 
 const queryMerchants = cache(async (): Promise<Merchant[]> => {
-  const payload = await getPayload({ config: configPromise })
+  try {
+    const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'merchants',
-    where: {
-      isPublished: {
-        equals: true,
+    const result = await payload.find({
+      collection: 'merchants',
+      where: {
+        isPublished: {
+          equals: true,
+        },
       },
-    },
-    sort: 'name',
-    depth: 2,
-  })
+      sort: 'name',
+      depth: 2,
+    })
 
-  return result.docs || []
+    return result.docs || []
+  } catch (error) {
+    console.error('Error fetching merchants during build:', error)
+    return []
+  }
 })
 
 const queryMerchantCategories = cache(async (): Promise<MerchantCategory[]> => {
-  const payload = await getPayload({ config: configPromise })
+  try {
+    const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'merchant-categories',
-    sort: 'title',
-    depth: 0,
-  })
+    const result = await payload.find({
+      collection: 'merchant-categories',
+      sort: 'title',
+      depth: 0,
+    })
 
-  return result.docs || []
+    return result.docs || []
+  } catch (error) {
+    console.error('Error fetching merchant categories during build:', error)
+    return []
+  }
 })
 
 export default async function MerchantsPage() {
   const [merchants, categories] = await Promise.all([queryMerchants(), queryMerchantCategories()])
-
-  if (!merchants || merchants.length === 0) {
-    return notFound()
-  }
 
   return (
     <div className="flex flex-col min-h-screen bg-black text-white relative">
@@ -65,7 +73,13 @@ export default async function MerchantsPage() {
         </section>
 
         <section className="container mx-auto px-6 pb-24">
-          <MerchantList merchants={merchants} categories={categories} />
+          {merchants && merchants.length > 0 ? (
+            <MerchantList merchants={merchants} categories={categories} />
+          ) : (
+            <div className="text-center py-12">
+              <p className="text-gray-400 text-lg">Zatím zde nejsou žádní obchodníci.</p>
+            </div>
+          )}
         </section>
       </div>
     </div>

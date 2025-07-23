@@ -7,6 +7,9 @@ import { draftMode } from 'next/headers'
 import { notFound } from 'next/navigation' // Pro případ, že stránka v CMS neexistuje
 import React, { cache } from 'react' // cache pro optimalizaci
 
+// Use ISR to regenerate pages every 10 minutes
+export const revalidate = 600
+
 // Metadata zůstává, ale mohla by být také dynamická, pokud by se titulek/popis bral z CMS
 export const metadata: Metadata = {
   title: 'Co je Kaspa? | Kaspacoin.cz',
@@ -16,22 +19,27 @@ export const metadata: Metadata = {
 
 // Funkce pro načtení dat stránky z CMS (podobná té v [slug]/page.tsx)
 const queryPageBySlug = cache(async (slug: string) => {
-  const { isEnabled: draft } = await draftMode()
-  const payload = await getPayload({ config: configPromise })
+  try {
+    const { isEnabled: draft } = await draftMode()
+    const payload = await getPayload({ config: configPromise })
 
-  const result = await payload.find({
-    collection: 'pages',
-    where: {
-      slug: {
-        equals: slug,
+    const result = await payload.find({
+      collection: 'pages',
+      where: {
+        slug: {
+          equals: slug,
+        },
       },
-    },
-    limit: 1,
-    depth: 2, // Načteme i vnořená data, např. obrázky v MediaBlock
-    draft,
-    overrideAccess: draft, // Povolíme přístup k draftům pokud je draft mode zapnutý
-  })
-  return result.docs?.[0] || null
+      limit: 1,
+      depth: 2, // Načteme i vnořená data, např. obrázky v MediaBlock
+      draft,
+      overrideAccess: draft, // Povolíme přístup k draftům pokud je draft mode zapnutý
+    })
+    return result.docs?.[0] || null
+  } catch (error) {
+    console.error('Error fetching page data during build:', error)
+    return null
+  }
 })
 
 // Hlavní komponenta stránky, nyní asynchronní pro načítání dat

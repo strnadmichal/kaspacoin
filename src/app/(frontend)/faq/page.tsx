@@ -5,6 +5,9 @@ import { getPayload } from 'payload'
 import React, { cache } from 'react'
 import type { Faq, FaqCategory } from '@/payload-types'
 
+// Use ISR to regenerate pages every 10 minutes
+export const revalidate = 600
+
 export const metadata: Metadata = {
   title: 'FAQ - Často kladené dotazy | Kaspacoin.cz',
   description:
@@ -16,20 +19,49 @@ interface FaqCategoryWithFaqs extends FaqCategory {
 }
 
 const queryFAQsByCategory = cache(async (): Promise<FaqCategoryWithFaqs[]> => {
-  const payload = await getPayload({ config: configPromise })
+  try {
+    const payload = await getPayload({ config: configPromise })
 
-  const categories = await payload.find({
-    collection: 'faq-categories',
-    sort: 'name',
-    depth: 0,
-  })
+    const categories = await payload.find({
+      collection: 'faq-categories',
+      sort: 'name',
+      depth: 0,
+    })
 
-  for (const category of categories.docs) {
+    for (const category of categories.docs) {
+      const faqs = await payload.find({
+        collection: 'faq',
+        where: {
+          'category.id': {
+            equals: category.id,
+          },
+          isPublished: {
+            equals: true,
+          },
+        },
+        sort: 'order createdAt',
+        depth: 1,
+      })
+      ;(category as FaqCategoryWithFaqs).faqs = faqs.docs
+    }
+
+    return categories.docs.filter(
+      (c) => (c as FaqCategoryWithFaqs).faqs && (c as FaqCategoryWithFaqs).faqs.length > 0,
+    ) as FaqCategoryWithFaqs[]
+  } catch (error) {
+    console.error('Error fetching FAQ categories during build:', error)
+    return []
+  }
+})
+
+const queryUncategorizedFAQs = cache(async (): Promise<Faq[]> => {
+  try {
+    const payload = await getPayload({ config: configPromise })
     const faqs = await payload.find({
       collection: 'faq',
       where: {
-        'category.id': {
-          equals: category.id,
+        category: {
+          exists: false,
         },
         isPublished: {
           equals: true,
@@ -38,30 +70,11 @@ const queryFAQsByCategory = cache(async (): Promise<FaqCategoryWithFaqs[]> => {
       sort: 'order createdAt',
       depth: 1,
     })
-    ;(category as FaqCategoryWithFaqs).faqs = faqs.docs
+    return faqs.docs
+  } catch (error) {
+    console.error('Error fetching uncategorized FAQs during build:', error)
+    return []
   }
-
-  return categories.docs.filter(
-    (c) => (c as FaqCategoryWithFaqs).faqs && (c as FaqCategoryWithFaqs).faqs.length > 0,
-  ) as FaqCategoryWithFaqs[]
-})
-
-const queryUncategorizedFAQs = cache(async (): Promise<Faq[]> => {
-  const payload = await getPayload({ config: configPromise })
-  const faqs = await payload.find({
-    collection: 'faq',
-    where: {
-      category: {
-        exists: false,
-      },
-      isPublished: {
-        equals: true,
-      },
-    },
-    sort: 'order createdAt',
-    depth: 1,
-  })
-  return faqs.docs
 })
 
 export default async function FAQPage() {
